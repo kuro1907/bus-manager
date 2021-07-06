@@ -18,4 +18,10 @@ class SchedulesEloquentRepository implements SchedulesRepository
                        ->where('group_number', $group_number)
                        ->get();
     }
+
+    public function getRouteName($route_name_id)
+    {
+        return Schedule::where('route_name_id', $route_name_id)
+                       ->get();
+    }
 }

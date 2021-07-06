@@ -44,6 +44,7 @@ Route::prefix('routes')->group(function () {
     Route::post('/createname', [RoutesController::class, 'storename']);
     Route::post('/create/{id}/{number}', [RoutesController::class, 'storeStation']);
     Route::get('/{id}', [RoutesController::class, 'show']);
+    Route::get('/schedule/{id}', [RoutesController::class, 'showSchedule']);
     Route::put('/{id}', [RoutesController::class, 'update']);
     Route::delete('/{id}', [RoutesController::class, 'destroy']);
     Route::get('/find/{start_station_id}/{target_station_id}', [RoutesController::class, 'findPath']);

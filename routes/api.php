@@ -77,3 +77,13 @@ Route::prefix('operations')->group(function () {
     Route::get('/{id}/delete', [OperationsController::class, 'delete']);
     Route::delete('/{id}', [OperationsController::class, 'destroy']);
 });
+
+Route::prefix('staffs')->group(function () {
+    Route::get('', [StaffsController::class, 'index']);
+    Route::post('/create', [StaffsController::class, 'store']);
+    Route::get('/{id}', [StaffsController::class, 'show']);
+    Route::get('/{id}/edit', [StaffsController::class, 'edit']);
+    Route::put('/{id}', [StaffsController::class, 'update']);
+    Route::get('/{id}/delete', [StaffsController::class, 'delete']);
+    Route::delete('/{id}', [StaffsController::class, 'destroy']);
+});

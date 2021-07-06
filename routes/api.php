@@ -68,7 +68,7 @@ Route::prefix('staffs')->group(function () {
 
 Route::prefix('operations')->group(function () {
     Route::get('', [OperationsController::class, 'index']);
-    Route::get('/create', [OperationsController::class, 'create']);
+    Route::get('/create/{date}', [OperationsController::class, 'create']);
     Route::post('/create', [OperationsController::class, 'store']);
     Route::get('/{id}', [OperationsController::class, 'show']);
     Route::get('/{id}/edit', [OperationsController::class, 'edit']);

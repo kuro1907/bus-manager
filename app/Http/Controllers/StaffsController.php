@@ -49,7 +49,23 @@ class StaffsController extends Controller
             'last_worktime' => strtotime(date("Y-m-d H:i:s")),
             'status' => 1
         ];
-        $store_success = $this->staffsRepository->create($attributes);
+        $staff_id = $this->staffsRepository->create($attributes);
+        if (isset($staff_id)) {
+            $store_success = true;
+            $birthyear = date("Y", strtotime($request->birthday));
+            $age = date("Y") - $birthyear;
+            $attributes = [
+                'name' => $request->name,
+                'user_name' => $request->user_name,
+                'password' => $request->password,
+                'age' => $age,
+                'gender' => $request->gender,
+                'role_code' => $request->role,
+                'staff_id' => $staff_id
+            ];
+            $this->staffsRepository->createUser($attributes);
+        }
+        else $store_success = false;
 
         if ($store_success) Session::flash('success', 'Đã thêm thông tin nhân viên thành công');
         else Session::flash('fail', 'Đã có lỗi xảy ra');

@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquents;
 
 use App\Repositories\Contracts\StaffsRepository;
 use App\Models\Staff;
+use App\Models\User;
 
 class StaffsEloquentRepository implements StaffsRepository
 {
@@ -72,6 +73,11 @@ class StaffsEloquentRepository implements StaffsRepository
     {
         $staff = $this->get($id);
         $staff->destroy($id);
+    }
+
+    public function createUser($attributes) 
+    {
+        return User::create($attributes);
     }
 }
 

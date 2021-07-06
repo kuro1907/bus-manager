@@ -31,4 +31,11 @@ class OperationsEloquentRepository implements OperationsRepository
     public function delete($id){
         
     }
+
+    public function getByDate($date)
+    {
+        $operations = Operation::where('date', $date)
+                               ->get();
+        return $operations;
+    }
 }

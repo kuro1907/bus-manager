@@ -9,4 +9,5 @@ interface StaffsRepository extends RepositoryInterface {
     public function getOperators();
     public function updatePosition($id, $attributes);
     public function getAvailableStaffs($route_name_id);
+    public function createUser($attributes);
 }

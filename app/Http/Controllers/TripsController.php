@@ -57,83 +57,93 @@ class TripsController extends Controller
     {
         $route_name = $this->routeNamesRepository->get($route_name_id);
         $staffs = $this->staffsRepository->getAvailableStaffs($route_name_id);
-        
+        $working_staffs = $this->staffSchedulesRepository->getWorkingStaff($date);
+        $drivers = [];
+        $ticket_collectors = [];
+        foreach ($staffs as $staff) {
+            $check_working = false;
+            foreach ($working_staffs as $working_staff) {
+                if ($staff->id == $working_staff->staff_id) {
+                    $check_working = true;
+                    break;
+                }
+            }
+            if ($check_working) continue;
 
-        return view('trips.test', compact('schedules'));
+            if ($staff->role_code == 1) {
+                $drivers[] = $staff;
+            }
+            if ($staff->role_code == 2) {
+                $ticket_collectors[] = $staff;
+            }
+        }
+
+        $buses_list = $this->busesRepository->getAvailableBuses($route_name_id);
+        $working_buses = $this->busSchedulesRepository->getWorkingBus($date);
+        $buses = [];
+        foreach ($buses_list as $bus) {
+            $check_working = false;
+            foreach ($working_buses as $working_bus) {
+                if ($bus->id == $working_bus->bus_id) {
+                    $check_working = true;
+                    break;
+                }
+            }
+            if ($check_working) continue;
+            $buses[] = $bus;
+        }
+
+        return view('trips.create', compact('route_name', 'group', 'drivers', 'ticket_collectors', 'buses'));
     }
 
-    public function store($route_name_id, $group, $date, Request $request)
+    public function store($date, $route_name_id, $group, Request $request)
     {
         
         $driver_id = $request->driver_id;
         $ticket_collector_id = $request->ticket_collector_id;
         $bus_id = $request->bus_id;
+        $date_number = strtotime($date);
 
-    //     $direction = $request->direction;
-    //     $route = $this->routesRepository->getByDirection($route_name_id, $direction);
-    //     $date = strtotime($request->date);
-    //     $date_text = date("Y-m-d", $date);
-    //     $end_hour = $request->end_hour;
-    //     $end_minute = $request->end_minute;
-    //     $end_second = $request->end_second;
-    //     $start_time_text = $date_text . "." . $request->start_hour . ":" . $request->start_minute . ":" . $request->start_second;
-    //     $start_time = strtotime($start_time_text);
-    //     $end_time_text = $date_text . "." . $end_hour . ":" . $end_minute . ":" . $end_second;
-    //     $end_time = strtotime($end_time_text);
-    //     $last_trip = $this->tripsRepository->getLastTrip($route->id, $request->date);
-    //     if (isset($last_trip)) {
-    //         $number = $last_trip->number + 1;
-    //         $last_status = $last_trip->status;
-    //         if ($last_status > 1) $status = 1;
-    //         else $status = 0;
-    //     }
-    //     else {
-    //         $number = 1;
-    //         $status = 1;
-    //     }
-    //     $attributes = [ 
-    //         'route_id' => $route->id, 
-    //         'date' => $request->date,
-    //         'number' => $number,
-    //         'start_time' => $start_time,
-    //         'end_time' => $end_time,
-    //         'bus_id' => $request->bus_id,
-    //         'driver_id' => $request->driver_id,
-    //         'ticket_collector_id' => $request->ticket_collector_id,
-    //         'operator_id' => 1,
-    //         'next_station_id' => $route->first_station_id,
-    //         'next_station_number' => 1,
-    //         'status' => $status,
-    //         'arrive_at' => $start_time,
-    //         'passenger' => 0
-    //     ];
-    //     $store_success = $this->tripsRepository->create($attributes);
+        $schedules = $this->schedulesRepository->getGroup($route_name_id, $group);
+        // dd($schedules, $route_name_id, $group);
+        foreach ($schedules as $schedule) {
+            $route = $this->routesRepository->get($schedule->route_id);
+            $attributes = [ 
+                'route_id' => $schedule->route_id, 
+                'date' => $date,
+                'number' => $schedule->number,
+                'start_time' => $date_number + $schedule->start_time,
+                'end_time' => $date_number + $schedule->start_time + $route->total_time,
+                'bus_id' => $bus_id,
+                'driver_id' => $driver_id,
+                'ticket_collector_id' => $ticket_collector_id,
+                'operator_id' => 1,
+                'next_station_id' => $route->first_station_id,
+                'next_station_number' => 1,
+                'status' => 1,
+                'arrive_at' => $date_number + $schedule->start_time,
+                'passenger' => 0
+            ];
+            $this->tripsRepository->create($attributes);
+        }
 
-    //     if ($store_success) Session::flash('success', 'Đã thêm thông tin chuyến thành công');
-    //     else Session::flash('fail', 'Đã có lỗi xảy ra');
+        $attributes = [ 
+            'staff_id' => $driver_id,
+            'date' => $date
+        ];
+        $this->staffSchedulesRepository->create($attributes);
 
-    //     if ($end_minute > 30) {
-    //         $end_minute = $end_minute - 30;
-    //         $end_hour = $end_hour + 1;
-    //         if ($end_minute < 10) $end_minute = "0" . $end_minute;
-    //         if ($end_hour < 10) $end_hour = "0" . $end_hour;
-    //     }
-    //     else {
-    //         $end_minute = $end_minute + 30;
-    //         if ($end_minute < 10) $end_minute = "0" . $end_minute;
-    //     }
-
-    //     $end_time_text = $date_text . "." . $end_hour . ":" . $end_minute . ":" . $end_second;
-    //     $end_time = strtotime($end_time_text);
-
-    //     $position_attributes = [
-    //         'last_worktime' => $end_time, 
-    //         'last_station_id' => $route->last_station_id
-    //     ];
-    //     $this->busesRepository->updatePosition($request->bus_id, $position_attributes);
-    //     $this->staffsRepository->updatePosition($request->driver_id, $position_attributes);
-    //     $this->staffsRepository->updatePosition($request->ticket_collector_id, $position_attributes);
-    //     return redirect("trips/create/$route_name_id");
+        $attributes = [ 
+            'staff_id' => $ticket_collector_id,
+            'date' => $date
+        ];
+        $this->staffSchedulesRepository->create($attributes);
+        
+        $attributes = [ 
+            'bus_id' => $bus_id,
+            'date' => $date
+        ];
+        $this->busSchedulesRepository->create($attributes);
     }
 
     public function createHistory($id, $station_id) 

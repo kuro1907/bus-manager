@@ -23,15 +23,17 @@ class OperationsController extends Controller
         $this->staffsRepository = $staffsRepository;
     }
 
-    public function create()
+    public function create($date)
     {
         $routes = $this->routeNamesRepository->getAll();
         $operators = $this->staffsRepository->getOperators();
+        $operations = $this->operationsRepository->getByDate($date);
 
         // return view('operations.create', compact('routes', 'operators'));
         return response()->json([
             'routes' => $routes,
-            'operators' => $operators
+            'operators' => $operators,
+            'operations' => $operations
         ]);
     }
 

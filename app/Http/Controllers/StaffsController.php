@@ -29,7 +29,8 @@ class StaffsController extends Controller
     {
         $staff = $this->staffsRepository->get($id);
         $trips = $this->tripsRepository->getByStaff($id);
-        return view('staffs.detail', compact('staff', 'trips'));
+        // return view('staffs.detail', compact('staff', 'trips'));
+        return response()->json($staff);
     }
 
     public function create()
@@ -44,28 +45,26 @@ class StaffsController extends Controller
             'gender' => $request->gender,
             'birthday' => $request->birthday,
             'identity_number' => $request->identity_number,
-            'role_code' => $request->role,
-            'route_name_id' => $request->route_name_id,
+            'role_code' => $request->role_code,
             'last_worktime' => strtotime(date("Y-m-d H:i:s")),
             'status' => 1
         ];
         $staff_id = $this->staffsRepository->create($attributes);
         if (isset($staff_id)) {
             $store_success = true;
-            $birthyear = date("Y", strtotime($request->birthday));
-            $age = date("Y") - $birthyear;
-            $attributes = [
-                'name' => $request->name,
-                'user_name' => $request->user_name,
-                'password' => $request->password,
-                'age' => $age,
-                'gender' => $request->gender,
-                'role_code' => $request->role,
-                'staff_id' => $staff_id
-            ];
-            $this->staffsRepository->createUser($attributes);
-        }
-        else $store_success = false;
+            // $birthyear = date("Y", strtotime($request->birthday));
+            // $age = date("Y") - $birthyear;
+            // $attributes = [
+            //     'name' => $request->name,
+            //     'user_name' => $request->user_name,
+            //     'password' => $request->password,
+            //     'age' => $age,
+            //     'gender' => $request->gender,
+            //     'role_code' => $request->role,
+            //     'staff_id' => $staff_id
+            // ];
+            // $this->staffsRepository->createUser($attributes);
+        } else $store_success = false;
 
         if ($store_success) Session::flash('success', 'Đã thêm thông tin nhân viên thành công');
         else Session::flash('fail', 'Đã có lỗi xảy ra');

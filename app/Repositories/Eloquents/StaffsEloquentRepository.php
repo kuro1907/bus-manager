@@ -44,7 +44,7 @@ class StaffsEloquentRepository implements StaffsRepository
 
     public function create($attributes)
     {
-        return Staff::create($attributes);
+        return Staff::create($attributes)->id;
     }
 
     public function update($id, $attributes)

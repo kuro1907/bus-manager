@@ -255,7 +255,9 @@ class RoutesController extends Controller
                     'station_name' => $station->name,
                     'route_number' => $route->number,
                     'route_name' => $route->name,
-                    'route_direction' => $route->direction
+                    'route_direction' => $route->direction,
+                    'station_id' => $station_id,
+                    'route_id' => $route_id
                 );
                 if ($i > 0) {
                     $index = $node[$i][$index][3];
@@ -264,16 +266,22 @@ class RoutesController extends Controller
 
             $target_station = $this->stationsRepository->get($target_station_id);
             $edges[] = (object) array(
-                'station_name' => $target_station->name
+                'station_name' => $target_station->name,
+                'station_id' => $target_station_id
             );
-
             for ($i = 0; $i < count($edges) - 1; $i++) {
+                $first_station = $this->routeStationRepository->getByStationId($edges[$i]->station_id, $edges[$i]->route_id);
+                $first_station_time = $first_station->arrive_time;
+                $second_station = $this->routeStationRepository->getByStationId($edges[$i + 1]->station_id, $edges[$i]->route_id);
+                $second_station_time = $second_station->arrive_time;
+                $time = $second_station_time - $first_station_time;
                 $paths[$i] = (object) array(
                     'first_station' => $edges[$i]->station_name,
                     'route_number' => $edges[$i]->route_number,
                     'route_name' => $edges[$i]->route_name,
                     'route_direction' => $edges[$i]->route_direction,
-                    'second_station' => $edges[$i + 1]->station_name
+                    'second_station' => $edges[$i + 1]->station_name,
+                    'time' => $time
                 );
             }
         }

@@ -8,18 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     {{--angular styles begin--}}
-		<link rel="icon" type="image/x-icon" href="favicon.ico" src="favicon.ico">
-		<link id="theme-style" rel="stylesheet" href="assets/css/portal.css" src="assets/css/portal.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-		<link rel="preconnect" href="https://fonts.gstatic.com" src="https://fonts.gstatic.com">
-		<link rel="stylesheet" href="client/styles.e128233f64eb9e92b7d6.css" src="client/styles.e128233f64eb9e92b7d6.css">
-		{{--angular styles end--}}
+    <link rel="icon" type="image/x-icon" href="favicon.ico" src="favicon.ico">
+    <!-- <link id="theme-style" rel="stylesheet" href="assets/css/portal.css" src="assets/css/portal.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" src="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="client/styles.e128233f64eb9e92b7d6.css" src="client/styles.e128233f64eb9e92b7d6.css">
+    {{--angular styles end--}}
 
 <body>
     <app-root></app-root>
     {{--angular scripts begin--}}
-		<script>
+    <!-- <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
       'use strict';
@@ -38,15 +38,15 @@
         });
       }, false);
     })();
-    </script>
-		<script src="client/runtime-es2015.09cbf96dcceaf66c2ecc.js" type="module"></script>
-		<script src="client/runtime-es5.09cbf96dcceaf66c2ecc.js" nomodule="" defer=""></script>
-		<script src="client/polyfills-es5.464c5ba5d19ba6086232.js" nomodule="" defer=""></script>
-		<script src="client/polyfills-es2015.39da4852166aae81dc2b.js" type="module"></script>
-		<script src="client/scripts.1b27f32a62046a731e09.js" defer=""></script>
-		<script src="client/main-es2015.732439ca8beb9b6c692f.js" type="module"></script>
-		<script src="client/main-es5.732439ca8beb9b6c692f.js" nomodule="" defer=""></script>
-		{{--angular scripts end--}}
+    </script> -->
+    <script src="client/runtime-es2015.8aaa1014be406626a009.js" type="module"></script>
+    <script src="client/runtime-es5.8aaa1014be406626a009.js" nomodule="" defer=""></script>
+    <script src="client/polyfills-es5.464c5ba5d19ba6086232.js" nomodule="" defer=""></script>
+    <script src="client/polyfills-es2015.39da4852166aae81dc2b.js" type="module"></script>
+    <script src="client/scripts.1b27f32a62046a731e09.js" defer=""></script>
+    <script src="client/main-es2015.43c2f1b6b1ac5de7ef2a.js" type="module"></script>
+    <script src="client/main-es5.43c2f1b6b1ac5de7ef2a.js" nomodule="" defer=""></script>
+    {{--angular scripts end--}}
 </body>
 
 </html>

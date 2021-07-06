@@ -7,6 +7,7 @@ use App\Repositories\Contracts\RoutesRepository;
 use App\Repositories\Contracts\RouteStationRepository;
 use App\Repositories\Contracts\StationsRepository;
 use App\Repositories\Contracts\IntersectionsRepository;
+use App\Repositories\Contracts\SchedulesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -17,19 +18,22 @@ class RoutesController extends Controller
     protected $routeStationRepository;
     protected $stationsRepository;
     protected $intersectionsRepository;
+    protected $schedulesRepository;
 
     public function __construct(
         RoutesRepository $routesRepository,
         RouteNamesRepository $routeNamesRepository,
         RouteStationRepository $routeStationRepository,
         StationsRepository $stationsRepository,
-        IntersectionsRepository $intersectionsRepository
+        IntersectionsRepository $intersectionsRepository,
+        SchedulesRepository $schedulesRepository
     ) {
         $this->routesRepository = $routesRepository;
         $this->routeNamesRepository = $routeNamesRepository;
         $this->routeStationRepository = $routeStationRepository;
         $this->stationsRepository = $stationsRepository;
         $this->intersectionsRepository = $intersectionsRepository;
+        $this->schedulesRepository = $schedulesRepository;
     }
 
     public function index()
@@ -57,6 +61,41 @@ class RoutesController extends Controller
         ];
         // return view('routes.detail', compact('route', 'first_route_stations', 'second_route_stations'));
         return response()->json($data);
+    }
+
+    public function showSchedule($route_name_id)
+    {
+        $route_name = $this->routeNamesRepository->get($route_name_id);
+        $first_route = $this->routesRepository->get($route_name->first_route_id);
+        $second_route = $this->routesRepository->get($route_name->second_route_id);
+        $schedules = $this->schedulesRepository->getRouteName($route_name_id);
+        $first_route_schedules = [];
+        $second_route_schedules = [];
+        foreach ($schedules as $schedule) {
+            if ($schedule->route_id == $first_route->id) {
+                $first_route_schedules[] = (object) array(
+                    'route_id' => $schedule->route_id,
+                    'number' => $schedule->number,
+                    'start_time' => $schedule->start_time,
+                    'end_time' => $schedule->start_time + $first_route->total_time,
+                    'group_number' => $schedule->group_number
+                );
+            } elseif ($schedule->route_id == $second_route->id) {
+                $second_route_schedules[] = (object) array(
+                    'route_id' => $schedule->route_id,
+                    'number' => $schedule->number,
+                    'start_time' => $schedule->start_time,
+                    'end_time' => $schedule->start_time + $second_route->total_time,
+                    'group_number' => $schedule->group_number
+                );
+            }
+        }
+        $data = [
+            'route_name' => $route_name,
+            'first_route_schedules' => $first_route_schedules,
+            'second_route_schedules' => $second_route_schedules
+        ];
+        return response()->json($data); 
     }
 
     public function createname()

@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             StationSeeder::class,
-            RouteSeeder::class,
             RouteNameSeeder::class,
+            RouteSeeder::class,
             RouteStasionSeeder::class,
-            ScheduleSeeder::class,
             IntersectionSeeder::class,
+            ScheduleSeeder::class,
         ]);
     }
 }

@@ -2173,7 +2173,7 @@ class ScheduleSeeder extends Seeder
             ]
         ];
         foreach ($schedules as $schedule) {
-            DB::table('route_station')->insert([
+            DB::table('$schedules')->insert([
                 'route_name_id' => $schedule['route_name_id'],
                 'route_id' => $schedule['route_id'],
                 'number' => $schedule['number'],

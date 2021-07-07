@@ -1305,7 +1305,7 @@ class IntersectionSeeder extends Seeder
             ]
         ];
         foreach ($intersections as $intersection) {
-            DB::table('$intersections')->insert([
+            DB::table('intersections')->insert([
                 'first_route_id' => $intersection['first_route_id'],
                 'second_route_id' => $intersection['second_route_id'],
                 'station_id' => $intersection['station_id'],
